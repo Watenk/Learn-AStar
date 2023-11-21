@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance { get; private set; }
 
     //Mouse
-    public event Action OnLeftMouseButton;
+    public event Action OnLeftMouseButtonDown;
     public event Action OnRightMouseButtonDown;
     public event Action OnRightMouseButtonUp;
     public event Action OnMiddleMouseButton;
@@ -31,7 +31,7 @@ public class InputManager : MonoBehaviour
     private void UpdateMouse()
     {
         //Buttons
-        if (Input.GetMouseButton(0) && OnLeftMouseButton != null) { OnLeftMouseButton(); }
+        if (Input.GetMouseButtonDown(0) && OnLeftMouseButtonDown != null) { OnLeftMouseButtonDown(); }
         if (Input.GetMouseButtonDown(1) && OnRightMouseButtonDown != null) { OnRightMouseButtonDown(); }
         if (Input.GetMouseButtonUp(1) && OnRightMouseButtonUp != null) { OnRightMouseButtonUp(); }
         if (Input.GetMouseButton(2) && OnMiddleMouseButton != null) { OnMiddleMouseButton(); }

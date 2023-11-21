@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    public static GridManager Instance { get; private set; }
+
     public Vector2Int GridSize;
     [Header("GridGeneration")]
     public int PerlinMagnification;
@@ -22,6 +24,10 @@ public class GridManager : MonoBehaviour
     private int perlinXOffset;
     private int perlinYOffset;
 
+    public void Awake()
+    {
+        Instance = this;
+    }
 
     public void Start()
     {
@@ -70,7 +76,8 @@ public class GridManager : MonoBehaviour
     private void SpawnPlayer(Vector2Int _pos)
     {
         Cell spawnCell = GetMovableCellAround(_pos);
-        Instantiate(PlayerPrefab, new Vector3(spawnCell.Pos.x, -spawnCell.Pos.y, -2), Quaternion.identity);
+        PlayerManager player = Instantiate(PlayerPrefab, new Vector3(spawnCell.Pos.x, -spawnCell.Pos.y, -2), Quaternion.identity).GetComponent<PlayerManager>();
+        player.Pos = spawnCell.Pos;
     }
     
     private Cells GetPerlinCell(Vector2Int _pos)
@@ -92,7 +99,7 @@ public class GridManager : MonoBehaviour
                 if (IsInGrid(currentPos))
                 {
                     Cell currentCell = GetCell(currentPos);
-                    if (currentCell.TileMoveCost != 0)
+                    if (currentCell.CellMoveCost != 0)
                     {
                         return currentCell;
                     }
