@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 964367114362088951}
   - component: {fileID: 3607639243764056634}
   m_Layer: 0
-  m_Name: PathFloor
+  m_Name: SandFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

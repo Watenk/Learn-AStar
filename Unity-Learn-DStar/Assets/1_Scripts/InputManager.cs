@@ -12,9 +12,11 @@ public class InputManager : MonoBehaviour
     public event Action OnRightMouseButtonDown;
     public event Action OnRightMouseButtonUp;
     public event Action OnMiddleMouseButton;
-    public event Action<Vector3> OnMouseMove;
+    public event Action<Vector3, Vector3> OnMouseMove;
+    public event Action<Vector2> OnScroll;
 
     private Vector3 previousMousePos;
+    private Vector2 previousScrollDelta;
 
     void Awake()
     {
@@ -37,8 +39,14 @@ public class InputManager : MonoBehaviour
         //Pos
         if (Input.mousePosition != previousMousePos && OnMouseMove != null)
         {
-            OnMouseMove(Input.mousePosition);
+            OnMouseMove(Input.mousePosition, previousMousePos);
         }
         previousMousePos = Input.mousePosition;
+
+        if (Input.mouseScrollDelta != previousScrollDelta && OnScroll != null)
+        {
+            OnScroll(Input.mouseScrollDelta);
+        }
+        previousScrollDelta = Input.mouseScrollDelta;
     }
 }

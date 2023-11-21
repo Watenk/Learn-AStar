@@ -7,7 +7,7 @@ public enum Cells
 {
     DirtFloor = 0,
     StoneFloor = 1,
-    PathFloor = 2,
+    SandFloor = 2,
     WaterFloor = 3,
     StoneWall = 4,
     WaterWall = 5,

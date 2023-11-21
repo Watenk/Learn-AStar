@@ -228,6 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a337217f3154c4a87964cfe48aa602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxZoom: 50
+  MinZoom: 2
+  Sensitivity: 0.1
 --- !u!1 &520456301
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GridSize: {x: 100, y: 100}
   PerlinMagnification: 10
-  GenerationCells: 05000000030000000100000000000000000000000000000002000000
+  GenerationCells: 0500000005000000050000000300000002000000000000000000000000000000010000000400000004000000
   CellPrefabs:
   - cellID: 0
     prefab: {fileID: 616587426286160310, guid: 572fdb497e1a7354582781b7e9ae8bb1, type: 3}
@@ -270,7 +273,7 @@ MonoBehaviour:
     MoveCost: 4
   - cellID: 2
     prefab: {fileID: 8707661433227637971, guid: 0ca586e819db716408269fb9caaf8dbd, type: 3}
-    MoveCost: 1
+    MoveCost: 10
   - cellID: 3
     prefab: {fileID: 1857827592573097035, guid: e628902b9c1b93b458dea166cf08449a, type: 3}
     MoveCost: 20
@@ -280,6 +283,7 @@ MonoBehaviour:
   - cellID: 5
     prefab: {fileID: 5408699351248674370, guid: 801167fab46b85d4c92f1e39cff1bbb0, type: 3}
     MoveCost: 0
+  PlayerPrefab: {fileID: 882496196042895388, guid: aed5e7a48432a3748b409caeb3e63784, type: 3}
 --- !u!4 &520456303
 Transform:
   m_ObjectHideFlags: 0
