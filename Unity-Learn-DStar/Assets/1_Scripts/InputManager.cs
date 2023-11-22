@@ -7,6 +7,9 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
 
+    //Keyboard
+    public event Action OnSpacebar;
+
     //Mouse
     public event Action OnLeftMouseButtonDown;
     public event Action OnRightMouseButtonDown;
@@ -25,7 +28,14 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        UpdateKeyboard();
         UpdateMouse();
+    }
+
+    private void UpdateKeyboard()
+    {
+        if (Input.GetKey(KeyCode.Space) && OnSpacebar != null) { OnSpacebar(); }
+
     }
 
     private void UpdateMouse()

@@ -99,7 +99,7 @@ public class GridManager : MonoBehaviour
                 if (IsInGrid(currentPos))
                 {
                     Cell currentCell = GetCell(currentPos);
-                    if (currentCell.CellMoveCost != 0)
+                    if (currentCell.CellMoveCost >= 0)
                     {
                         return currentCell;
                     }

@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
-    public GameObject PathPrefab;
     public Vector2Int Pos { get; set; }
 
-    private DStar dStar;
+    private ADStar adStar;
 
     public void Start()
     {
-        dStar = new DStar();
+        adStar = new ADStar();
+        InputManager.Instance.OnSpacebar += OnSpacebar;
         InputManager.Instance.OnLeftMouseButtonDown += OnLeftMouseButtonDown;
     }
 
@@ -26,12 +27,19 @@ public class PlayerManager : MonoBehaviour
         Vector3 mouseWorldPosVector3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2Int mouseWorldPos = new Vector2Int((int)mouseWorldPosVector3.x, (int)-mouseWorldPosVector3.y);
 
-        Stack<Vector2Int> path = dStar.CalcPath(Pos, mouseWorldPos);
+        adStar.SetTarget(Pos, mouseWorldPos);
+    }
 
-        foreach (Vector2Int currentNode in path)
+    private void OnSpacebar()
+    {
+        List<Node> path = adStar.CalcPath();
+
+        if (path != null)
         {
-            Instantiate(PathPrefab, new Vector3(currentNode.x, -currentNode.y, -2), Quaternion.identity);
-            Move(currentNode);
+            foreach (Node currentNode in path)
+            {
+                Move(currentNode.Pos);
+            }
         }
     }
 }
