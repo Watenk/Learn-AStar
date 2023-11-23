@@ -19,7 +19,7 @@ public class DebugManager : MonoBehaviour
         Instance = this;
     }
 
-    public void DrawNodeGrid(Node[,] _nodes, List<Node> _openNodes, List<Node> _closedNodes, Node _currentNode)
+    public void DrawNodeGrid(Node[,] _nodes, List<Node> _openNodes, List<Node> _closedNodes, Node _currentNode, bool _drawText)
     {
         RemoveDebugObjects();
 
@@ -42,14 +42,17 @@ public class DebugManager : MonoBehaviour
                         AddDebugObject(ClosedNodePrefab, new Vector2Int(x, y), -2);
                     }
 
-                    GameObject scoreText = AddDebugObject(ScoreTextPrefab, new Vector2Int(x, y), -3);
-                    Text FCost = scoreText.transform.Find("FCost").GetComponent<Text>();
-                    Text HCost = scoreText.transform.Find("HCost").GetComponent<Text>();
-                    Text GCost = scoreText.transform.Find("GCost").GetComponent<Text>();
+                    if (_drawText)
+                    {
+                        GameObject scoreText = AddDebugObject(ScoreTextPrefab, new Vector2Int(x, y), -3);
+                        Text FCost = scoreText.transform.Find("FCost").GetComponent<Text>();
+                        Text HCost = scoreText.transform.Find("HCost").GetComponent<Text>();
+                        Text GCost = scoreText.transform.Find("GCost").GetComponent<Text>();
 
-                    FCost.text = currentNode.FCost.ToString();
-                    HCost.text = currentNode.HCost.ToString();
-                    GCost.text = currentNode.GCost.ToString();
+                        FCost.text = currentNode.FCost.ToString();
+                        HCost.text = currentNode.HCost.ToString();
+                        GCost.text = currentNode.GCost.ToString();
+                    }
                 }
             }
         }

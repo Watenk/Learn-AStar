@@ -13,8 +13,6 @@ public class ADStar
 
     private Node agentNode;
     private Node targetNode;
-    private Node currentNode;
-    private Node previousNode;
 
     private Vector2Int gridSize;
 
@@ -27,28 +25,29 @@ public class ADStar
     public void SetTarget(Vector2Int _agentNode, Vector2Int _targetNode)
     {
         ClearNodes();
+        openNodes.Clear();
+        closedNodes.Clear();
 
         agentNode = GetNode(_agentNode);
         targetNode = GetNode(_targetNode);
-        currentNode = targetNode;
-        previousNode = currentNode;
+        openNodes.Add(targetNode);
     }
 
     //Returns null until path is found
     public List<Node> CalcPath()
     {
+        Node currentNode = GetLowestOpenNode();
+
         if (currentNode != agentNode)
         {
             CalcNeightbours(currentNode);
-            previousNode = currentNode;
-            currentNode = GetLowestOpenNode();
         }
         else
         {
             return RetracePath(agentNode, targetNode);
         }
 
-        DebugManager.Instance.DrawNodeGrid(nodes, openNodes, closedNodes, currentNode);
+        DebugManager.Instance.DrawNodeGrid(nodes, openNodes, closedNodes, currentNode, false);
 
         return null;
     }
@@ -71,9 +70,6 @@ public class ADStar
 
     private void CalcNeightbours(Node _currentNode)
     {
-        openNodes.Remove(_currentNode);
-        closedNodes.Add(_currentNode);
-
         List<Node> neighbours = new List<Node>
         {
             GetNode(new Vector2Int(_currentNode.Pos.x, _currentNode.Pos.y - 1)),
@@ -84,31 +80,37 @@ public class ADStar
 
         foreach (Node loopNode in neighbours)
         {
-            if (loopNode != null && !closedNodes.Contains(loopNode))
-            {
-                CalcNodeCosts(loopNode, _currentNode.Pos);
-            }
+            CalcNodeCosts(loopNode, _currentNode.Pos);
         }
     }
 
     private void CalcNodeCosts(Node _currentNode, Vector2Int _parent)
     {
+        //Conditions for execution
+        if (_currentNode == null) { return; }
+        if (closedNodes.Contains(_currentNode)) { return; }
         int CellMoveCost = GridManager.Instance.GetCell(_currentNode.Pos).CellMoveCost;
         if (CellMoveCost < 0) { return; }
 
-        int GCost = CalcGCost(previousNode);
+        int GCost = CalcGCost(_parent);
         int HCost = CalcHCost(_currentNode);
         int FCost = GCost + HCost + CellMoveCost;
 
         _currentNode.SetNode(_parent, FCost, GCost, HCost);
-        openNodes.Add(_currentNode);
+
+        if (!openNodes.Contains(_currentNode))
+        {
+            openNodes.Add(_currentNode);
+        }
     }
 
     //Distance from starting node
-    private int CalcGCost(Node _currentNode)
+    private int CalcGCost(Vector2Int _parent)
     {
-        return RetracePath(_currentNode, targetNode).Count;
-    }
+        if (_parent == new Vector2Int(-1, -1)) { return 0; }
+        int newGCost = GetNode(_parent).GCost + 1;
+        return newGCost;
+    } 
 
     //Distance from end node (heuristic)
     private int CalcHCost(Node _currentNode)
@@ -120,7 +122,38 @@ public class ADStar
 
     private Node GetLowestOpenNode()
     {
-        return openNodes.OrderBy(node => node.FCost).ThenBy(node => node.HCost).FirstOrDefault();
+        Node lowestNode = openNodes.OrderBy(node => node.FCost).ThenBy(node => node.HCost).FirstOrDefault();
+        openNodes.Remove(lowestNode);
+        closedNodes.Add(lowestNode);
+        return lowestNode;
+        //List<Node> lowestOpenNodes = new List<Node>
+        //{
+        //    lowestNode
+        //};
+
+        ////Check for multiple nodes that have the same value
+        //foreach (Node loopNode in lowestOpenNodes)
+        //{
+        //    if (loopNode != lowestNode)
+        //    {
+        //        if (loopNode.GCost == lowestNode.GCost)
+        //        {
+        //            lowestOpenNodes.Add(loopNode);
+        //        }
+        //        else
+        //        {
+        //            break;
+        //        }
+        //    }
+        //}
+
+        //if (lowestOpenNodes.Count > 1)
+        //{
+        //    int randomIndex = Random.Range(0, lowestOpenNodes.Count);
+        //    return lowestOpenNodes[randomIndex];
+        //}
+
+        //return lowestOpenNodes[0];
     }
 
 
@@ -150,9 +183,9 @@ public class ADStar
 
     private bool IsInBounds(Vector2Int _pos)
     {
-        if (_pos.x > 0 && _pos.x < gridSize.x)
+        if (_pos.x >= 0 && _pos.x < gridSize.x)
         {
-            if (_pos.y > 0 && _pos.y < gridSize.y)
+            if (_pos.y >= 0 && _pos.y < gridSize.y)
             {
                 return true;
             }

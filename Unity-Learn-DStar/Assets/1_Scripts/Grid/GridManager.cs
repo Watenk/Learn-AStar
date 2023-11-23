@@ -127,9 +127,9 @@ public class GridManager : MonoBehaviour
 
     private bool IsInGrid(Vector2Int _pos)
     {
-        if (_pos.x > 0 && _pos.x < GridSize.x)
+        if (_pos.x >= 0 && _pos.x < GridSize.x)
         {
-            if (_pos.y > 0 && _pos.y < GridSize.y)
+            if (_pos.y >= 0 && _pos.y < GridSize.y)
             {
                 return true;
             }
