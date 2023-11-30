@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba6ea80d9f9947458cf161356d776d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridSize: {x: 100, y: 100}
+  GridSize: {x: 50, y: 50}
   PerlinMagnification: 10
   GenerationCells: 0500000005000000050000000300000002000000000000000000000000000000010000000400000004000000
   CellPrefabs:

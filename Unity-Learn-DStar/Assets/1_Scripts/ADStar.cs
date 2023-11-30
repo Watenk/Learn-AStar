@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.Timeline.AnimationPlayableAsset;
 
 //AStar with some DStar elements
+//Didn't have the time to
 public class ADStar
 {
     private List<Node> openNodes = new List<Node>();
@@ -125,35 +125,34 @@ public class ADStar
         Node lowestNode = openNodes.OrderBy(node => node.FCost).ThenBy(node => node.HCost).FirstOrDefault();
         openNodes.Remove(lowestNode);
         closedNodes.Add(lowestNode);
-        return lowestNode;
-        //List<Node> lowestOpenNodes = new List<Node>
-        //{
-        //    lowestNode
-        //};
+        List<Node> lowestOpenNodes = new List<Node>
+        {
+            lowestNode
+        };
 
-        ////Check for multiple nodes that have the same value
-        //foreach (Node loopNode in lowestOpenNodes)
-        //{
-        //    if (loopNode != lowestNode)
-        //    {
-        //        if (loopNode.GCost == lowestNode.GCost)
-        //        {
-        //            lowestOpenNodes.Add(loopNode);
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
+        //Check for multiple nodes that have the same value
+        foreach (Node loopNode in lowestOpenNodes)
+        {
+            if (loopNode != lowestNode)
+            {
+                if (loopNode.GCost == lowestNode.GCost)
+                {
+                    lowestOpenNodes.Add(loopNode);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
 
-        //if (lowestOpenNodes.Count > 1)
-        //{
-        //    int randomIndex = Random.Range(0, lowestOpenNodes.Count);
-        //    return lowestOpenNodes[randomIndex];
-        //}
+        if (lowestOpenNodes.Count > 1)
+        {
+            int randomIndex = Random.Range(0, lowestOpenNodes.Count);
+            return lowestOpenNodes[randomIndex];
+        }
 
-        //return lowestOpenNodes[0];
+        return lowestOpenNodes[0];
     }
 
 
